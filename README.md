@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a solution to the classic “Mars Robot” problem. I did not have time to impelent the scents part of the solution
+This project is a solution to the “Mars Robot” challenge. I did not have time to impelent the scents part of the solution
 
 ## Running the project
 
