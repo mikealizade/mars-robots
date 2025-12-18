@@ -23,7 +23,7 @@ interface Grid {
   maxY: number;
 }
 
-interface Start {
+interface RobotPos {
   x: number;
   y: number;
   dir: Dir;
@@ -39,17 +39,31 @@ const turnRight = (dir: Dir): Dir => {
   return map[dir];
 };
 
-const processInstructions = (grid: Grid, start: Start, instructions: string[]) => {
+const moveRobot = (r: RobotPos): RobotPos => {
+  const map: Record<Dir, [number, number]> = {
+    N: [0, 1],
+    S: [0, -1],
+    E: [1, 0],
+    W: [-1, 0],
+  };
+  const [dx, dy] = map[r.dir];
+  return { x: r.x + dx, y: r.y + dy, dir: r.dir };
+};
+
+const processInstructions = (grid: Grid, start: RobotPos, instructions: string[]) => {
   console.log('🚀 ~ processInstructions ~ start:', start);
   // console.log('🚀 ~ processInstructions ~ grid, start, instructions:', grid, start, instructions);
-  const robot = { ...start };
+  let robot = { ...start };
   for (const move of instructions) {
     if (move === 'L') robot.dir = turnLeft(robot.dir);
     if (move === 'R') robot.dir = turnRight(robot.dir);
+    if (move === 'F') {
+      robot = moveRobot(robot);
+    }
   }
 
   console.log('🚀 ~ processInstructions ~ robot:', robot);
-  return `${robot.dir}`;
+  return `${robot.x} ${robot.y} ${robot.dir}`;
 };
 
 const run = (baseInput: string) => {
