@@ -24,7 +24,6 @@ export const turnRight = (dir: Dir): Dir => {
 };
 
 export const moveRobot = (pos: RobotPos): RobotPos => {
-  console.log('🚀 ~ moveRobot ~ pos:', pos);
   const map: Record<Dir, [number, number]> = {
     N: [0, 1],
     S: [0, -1],

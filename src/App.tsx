@@ -39,10 +39,10 @@ const run = (baseInput: string) => {
     results.push(processInstructions(grid, start as RobotPos, intructions));
   }
 
-  console.log('🚀 ~ run ~ results:', results);
+  console.log(results.join('\n'));
 };
 
-console.log(run(baseInput));
+run(baseInput);
 
 function App() {
   return null;
