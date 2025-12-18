@@ -18,4 +18,4 @@ npm run test
 
 Initially started as a React app for ease even though not returning any UI
 
-Incrementally build out the functions.
+Incrementally build out the functions. Committed code incrementally once enough working logic there.
