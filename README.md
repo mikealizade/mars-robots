@@ -4,6 +4,10 @@
 
 This project is a solution to the “Mars Robot” challenge. I did not have time to impelent the scents part of the solution
 
+## View the result
+
+Open dev console
+
 ## Running the project
 
 npm install
