@@ -10,6 +10,10 @@ FRRFLLFFRRFLL
 LLFFFLFLFL
 `;
 
+// 1 1 E
+// 3 3 N LOST
+// 2 3 S
+
 type Dir = 'N' | 'S' | 'E' | 'W';
 
 interface Grid {
@@ -43,7 +47,9 @@ const processInstructions = (grid: Grid, start: Start, instructions: string[]) =
     if (move === 'L') robot.dir = turnLeft(robot.dir);
     if (move === 'R') robot.dir = turnRight(robot.dir);
   }
+
   console.log('🚀 ~ processInstructions ~ robot:', robot);
+  return `${robot.dir}`;
 };
 
 const run = (baseInput: string) => {
@@ -55,6 +61,7 @@ const run = (baseInput: string) => {
     maxX: +maxX,
     maxY: +maxY,
   };
+  const results = [];
 
   for (let i = 0, j = input.length; i < j; i += 2) {
     const [startX, startY, dir] = input[i].split(' ');
@@ -66,10 +73,10 @@ const run = (baseInput: string) => {
     const intructions = input[i + 1].split('');
     // console.log('🚀 ~ run ~ intructions:', intructions);
     // console.log('🚀 ~ run ~ [startX, startY, dir] :', [startX, startY, dir]);
-    processInstructions(grid, start, intructions);
+    results.push(processInstructions(grid, start, intructions));
   }
 
-  console.log('🚀 ~ run ~ inputArray:', grid);
+  console.log('🚀 ~ run ~ results:', results);
 };
 
 console.log(run(baseInput));
