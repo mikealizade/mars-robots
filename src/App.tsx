@@ -39,31 +39,44 @@ const turnRight = (dir: Dir): Dir => {
   return map[dir];
 };
 
-const moveRobot = (r: RobotPos): RobotPos => {
+const moveRobot = (pos: RobotPos): RobotPos => {
+  console.log('🚀 ~ moveRobot ~ pos:', pos);
   const map: Record<Dir, [number, number]> = {
     N: [0, 1],
     S: [0, -1],
     E: [1, 0],
     W: [-1, 0],
   };
-  const [dx, dy] = map[r.dir];
-  return { x: r.x + dx, y: r.y + dy, dir: r.dir };
+  const [dx, dy] = map[pos.dir];
+  return { x: pos.x + dx, y: pos.y + dy, dir: pos.dir };
 };
 
+const isOffGrid = (pos: RobotPos, g: Grid) => pos.x < g.minX || pos.x > g.maxX || pos.y < g.minY || pos.y > g.maxY;
+
 const processInstructions = (grid: Grid, start: RobotPos, instructions: string[]) => {
-  console.log('🚀 ~ processInstructions ~ start:', start);
-  // console.log('🚀 ~ processInstructions ~ grid, start, instructions:', grid, start, instructions);
-  let robot = { ...start };
+  let currPos = { ...start };
+  let lost = false;
+
   for (const move of instructions) {
-    if (move === 'L') robot.dir = turnLeft(robot.dir);
-    if (move === 'R') robot.dir = turnRight(robot.dir);
+    if (lost) break;
+
+    if (move === 'L') currPos.dir = turnLeft(currPos.dir);
+
+    if (move === 'R') currPos.dir = turnRight(currPos.dir);
+
     if (move === 'F') {
-      robot = moveRobot(robot);
+      const nextPos = moveRobot(currPos);
+
+      if (isOffGrid(nextPos, grid)) {
+        lost = true;
+        break;
+      }
+
+      currPos = nextPos;
     }
   }
 
-  console.log('🚀 ~ processInstructions ~ robot:', robot);
-  return `${robot.x} ${robot.y} ${robot.dir}`;
+  return `${currPos.x} ${currPos.y} ${currPos.dir}${lost ? ' LOST' : ''}`;
 };
 
 const run = (baseInput: string) => {
@@ -76,12 +89,13 @@ const run = (baseInput: string) => {
     maxY: +maxY,
   };
   const results = [];
+  const scents = [];
 
   for (let i = 0, j = input.length; i < j; i += 2) {
     const [startX, startY, dir] = input[i].split(' ');
     const start = {
-      x: startX,
-      y: startY,
+      x: +startX,
+      y: +startY,
       dir,
     };
     const intructions = input[i + 1].split('');
